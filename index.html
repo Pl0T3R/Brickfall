@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brickfall</title>
+<meta name="description" content="Mixed-reality brick smashing for Meta Quest 3, played with your hands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+  /* Layout: full-bleed 3D preview with one instruction card pinned bottom-left. */
+  :root {
+    --ground: #171a1e;
+    --card: rgba(24, 27, 32, 0.92);
+    --line: #2f353d;
+    --text: #eceae4;
+    --muted: #a3a8ae;
+    --brick: #f2b33d;
+    --brick-ink: #241a05;
+    --warn: #ff8a7a;
+    --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--ground); color: var(--text); font: 15px/1.5 var(--font-body); overflow: hidden; }
+  #app { position: fixed; inset: 0; }
+  #app canvas { display: block; touch-action: none; }
+
+  #overlay {
+    position: fixed;
+    left: max(16px, env(safe-area-inset-left, 0px));
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    max-width: 30rem;
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 20px 22px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    display: grid;
+    gap: 14px;
+    backdrop-filter: blur(6px);
+  }
+  #overlay[hidden] { display: none; }
+  .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h1 { font: 800 2rem/1 var(--font-display); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+  .tag { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .lede { margin: 0; color: var(--muted); max-width: 60ch; }
+  #enter {
+    font: 600 1.05rem/1 var(--font-body);
+    color: var(--brick-ink);
+    background: var(--brick);
+    border: 0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    justify-self: start;
+  }
+  #enter:hover { filter: brightness(1.07); }
+  #enter:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+  #enter:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+  #status { margin: 0; font-size: 0.9rem; color: var(--muted); min-height: 1.4em; }
+  #status.warn { color: var(--warn); }
+  ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 6px; }
+  ol li::marker { color: var(--brick); font-weight: 600; }
+  h2 { font: 600 0.78rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .keys { margin: 0; color: var(--muted); font-size: 0.88rem; }
+  kbd { font: 600 0.8rem var(--font-body); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; color: var(--text); }
+  @media (max-width: 480px) { h1 { font-size: 1.6rem; } #overlay { padding: 16px; } }
+  @media (prefers-reduced-motion: reduce) { #overlay { backdrop-filter: none; } }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app"></div>
+<section id="overlay" aria-label="Brickfall">
+  <div class="brand">
+    <h1>Brickfall</h1>
+    <span class="tag">Quest 3 · hands only</span>
+  </div>
+  <p class="lede">Virtual toy bricks and balls in your real room. Throw, knock over, rebuild.</p>
+  <button id="enter" type="button" disabled>Checking headset…</button>
+  <p id="status" role="status"></p>
+  <div>
+    <h2>In the headset</h2>
+    <ol>
+      <li>Pinch or make a fist in empty air and a ball appears in your hand. Swing and open your hand to throw.</li>
+      <li>Pinch or grab a brick or a ball to pick it up. Your hands also push things.</li>
+      <li>Turn your palm toward your face to open the menu. Tap buttons with the other index finger.</li>
+      <li>Floor, walls and tables from your Space Setup are solid.</li>
+    </ol>
+  </div>
+  <p class="keys">Preview on this screen: drag to look around, click to throw, <kbd>R</kbd> rebuild, <kbd>P</kbd> pile type, <kbd>B</kbd> ball type, <kbd>G</kbd> gravity, <kbd>S</kbd> slow motion, <kbd>C</kbd> clear balls.</p>
+</section>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
