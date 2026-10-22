@@ -1,5 +1,7 @@
 # Brickfall
 
+**Play: <https://pl0t3r.github.io/Brickfall/>** (open it in the Quest Browser)
+
 Mixed-reality brick smashing for Meta Quest 3. Virtual toy bricks and balls in your real room, played with hand tracking only (no controllers). It runs in the Quest Browser as a WebXR page, so there is nothing to install on the headset.
 
 | File | What it does |
